@@ -4,10 +4,6 @@
     "description": "Get github public gists",
     "main": "dist/index.js",
     "scripts": {
-        "prebuild": "tslint -c tslint.json -p tsconfig.production.json --fix",
-        "build": "tsc -p tsconfig.production.json",
-        "prestart": "npm run build",
-        "start": "NODE_ENV=production node .",
         "dev": "NODE_ENV=development nodemon src/app.ts"
     },
     "author": "Mritunjay Kumar Mani",

@@ -72,7 +72,7 @@ export const toggleGistFavorite = async (req: Request, res: Response): Promise<R
         if (gistId) {
 
             const markedFav: boolean = await toggleFavorite(GITHUB_BASE_URL, gistId, isFavourite);
-            
+
             if (markedFav) {
                 return res.status(200).json({
                     status: true,
