@@ -9,8 +9,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.toggleGistFavorite = exports.getGistById = exports.getUserGist = void 0;
+exports.getFavGist = exports.toggleGistFavorite = exports.getGistById = exports.getUserGist = void 0;
 const githubGist_1 = require("../lib/githubGist");
+const addGistToFavorite_1 = require("../DAO/addGistToFavorite");
 const GITHUB_BASE_URL = "https://api.github.com";
 const getUserGist = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -111,3 +112,27 @@ const toggleGistFavorite = (req, res) => __awaiter(void 0, void 0, void 0, funct
     }
 });
 exports.toggleGistFavorite = toggleGistFavorite;
+const getFavGist = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const favoriteGistList = yield (0, addGistToFavorite_1.getAllFavoriteGist)();
+        if (favoriteGistList) {
+            return res.status(200).json({
+                status: false,
+                message: favoriteGistList
+            });
+        }
+        else {
+            return res.status(500).json({
+                status: false,
+                message: "Some error occured while fetching favorite gists"
+            });
+        }
+    }
+    catch (error) {
+        return res.status(500).json({
+            status: false,
+            message: error
+        });
+    }
+});
+exports.getFavGist = getFavGist;

@@ -6,4 +6,5 @@ const router = (0, express_1.Router)();
 router.post("/gistByUser", githubGists_1.getUserGist);
 router.post("/gistById", githubGists_1.getGistById);
 router.post("/toggleFav", githubGists_1.toggleGistFavorite);
+router.get("/getFavorite", githubGists_1.getFavGist);
 exports.default = router;

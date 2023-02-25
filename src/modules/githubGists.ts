@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { getPublicGistOfUser, getPublicGistById, toggleFavorite } from "../lib/githubGist";
+import { getAllFavoriteGist } from "../DAO/addGistToFavorite"
 
 const GITHUB_BASE_URL = "https://api.github.com";
 
@@ -70,7 +71,8 @@ export const toggleGistFavorite = async (req: Request, res: Response): Promise<R
         const { gistId, isFavourite }: { gistId: string, isFavourite: boolean } = req.body;
         if (gistId) {
 
-            const markedFav: Record<string, any> | boolean = await toggleFavorite(GITHUB_BASE_URL, gistId, isFavourite);
+            const markedFav: boolean = await toggleFavorite(GITHUB_BASE_URL, gistId, isFavourite);
+            
             if (markedFav) {
                 return res.status(200).json({
                     status: true,
@@ -88,10 +90,32 @@ export const toggleGistFavorite = async (req: Request, res: Response): Promise<R
                 message: "Invalid gist-id"
             })
         }
-    } catch (error:any) {
+    } catch (error: any) {
         return res.status(500).json({
             status: false,
             message: error.message
         })
     }
-}
+};
+
+export const getFavGist = async (req: Request, res: Response): Promise<Record<string, any>> => {
+    try {
+        const favoriteGistList: Record<string, any>[] | boolean = await getAllFavoriteGist();
+        if (favoriteGistList) {
+            return res.status(200).json({
+                status: false,
+                message: favoriteGistList
+            })
+        } else {
+            return res.status(500).json({
+                status: false,
+                message: "Some error occured while fetching favorite gists"
+            })
+        }
+    } catch (error: any) {
+        return res.status(500).json({
+            status: false,
+            message: error
+        })
+    }
+};

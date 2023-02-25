@@ -35,7 +35,6 @@ const getPublicGistOfUser = (GITHUB_URL, username) => __awaiter(void 0, void 0, 
             const publicGists = (yield axios_1.default.get(`${GITHUB_URL}/users/${username}/gists`, {
                 headers
             })).data;
-            console.log(publicGists);
             return publicGists;
         }
         else {
@@ -49,7 +48,7 @@ const getPublicGistOfUser = (GITHUB_URL, username) => __awaiter(void 0, void 0, 
 });
 exports.getPublicGistOfUser = getPublicGistOfUser;
 //
-// 
+//
 /**
  * Fetch a public gist using gist-id
  * API: https://api.github.com/gists/{GIST_ID}
@@ -89,8 +88,13 @@ const toggleFavorite = (GITHUB_URL, gistId, isFavourite) => __awaiter(void 0, vo
         if (gistById) {
             const userId = gistById.owner.id;
             const gistUrl = gistById.url;
-            const starGist = yield (0, addGistToFavorite_1.toggleGistToFavorite)(userId, gistUrl, isFavourite, gistId);
-            if (starGist) {
+            const username = gistById.owner.id;
+            const userUrl = gistById.owner.html_url;
+            const starGist = yield Promise.all([
+                (0, addGistToFavorite_1.toggleGistToFavorite)(userId, gistUrl, isFavourite, gistId),
+                (0, addGistToFavorite_1.saveFavGistUserDetails)(userId, username, userUrl)
+            ]);
+            if (!starGist.includes(false)) {
                 return true;
             }
             else {
@@ -107,27 +111,3 @@ const toggleFavorite = (GITHUB_URL, gistId, isFavourite) => __awaiter(void 0, vo
     }
 });
 exports.toggleFavorite = toggleFavorite;
-/**
-CREATE TABLE "github-user.github-user-details" (
-    id SERIAL PRIMARY KEY NOT NULL,
-    username VARCHAR(255) NOT NULL UNIQUE,
-    url VARCHAR(255) NOT NULL UNIQUE,
-    user_id BIGINT NOT NULL UNIQUE,
-    gists_url VARCHAR(255) NOT NULL UNIQUE,
-    created_at TIMESTAMP NOT NULL,
-    updated_at TIMESTAMP NOT NULL
-);
-
-DROP SCHEMA "github-user" CASCADE;
-CREATE SCHEMA "github";
-CREATE TABLE "github".user (
-    id SERIAL PRIMARY KEY NOT NULL,
-    username VARCHAR(255) NOT NULL UNIQUE,
-    url VARCHAR(255) NOT NULL UNIQUE,
-    user_id BIGINT NOT NULL UNIQUE,
-    gists_url VARCHAR(255) NOT NULL UNIQUE,
-    created_at TIMESTAMP NOT NULL,
-    updated_at TIMESTAMP NOT NULL
-);
-psql --host=postgresql-112649-0.cloudclusters.net -p 10033 -U mritunjay -d github-gists
- */ 
