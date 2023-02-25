@@ -1,0 +1,37 @@
+{
+    "name": "github-gist-fetcher",
+    "version": "1.0.0",
+    "description": "Get github public gists",
+    "main": "dist/index.js",
+    "scripts": {
+        "dev": "NODE_ENV=development nodemon src/app.ts"
+    },
+    "author": "Mritunjay Kumar Mani",
+    "license": "ISC",
+    "dependencies": {
+        "@sentry/integrations": "^7.7.0",
+        "@sentry/node": "^7.7.0",
+        "ajv": "^8.9.0",
+        "axios": "^0.21.1",
+        "dotenv": "^8.2.0",
+        "express": "^4.17.1",
+        "pg": "^8.5.1",
+        "pg-cursor": "^2.6.0",
+        "pg-query-stream": "^4.1.0",
+        "winston": "^3.4.0",
+        "winston-daily-rotate-file": "^4.5.5"
+    },
+    "devDependencies": {
+        "@types/cors": "^2.8.13",
+        "@types/express": "^4.17.13",
+        "@types/node": "^17.0.9",
+        "@types/pg": "^8.6.4",
+        "nodemon": "^2.0.7",
+        "ts-node": "^10.4.0",
+        "tslint": "^6.1.3",
+        "typescript": "^4.5.4"
+    },
+    "engines": {
+        "node": "16"
+    }
+}
